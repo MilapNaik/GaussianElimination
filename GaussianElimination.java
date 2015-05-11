@@ -4,72 +4,73 @@ import java.util.Scanner;
 public class GaussianElimination
 {
 
-
 	static public void main(String[] args) throws IOException
 	{
         // Create a file object with the name passed as a command line argument (i.e. as args[0] element)
         // define Scanner for reading a system from a file
-          File inp = new File(args[0]);
+		  File inp = new File(args[0]);
           Scanner input = new Scanner(inp);
 
         // read the size of the system (number of rows)
           int numRows = 0;
           numRows = input.nextInt();   
          
-        
-        double[][] system = new double[numRows][numRows+1];
         // define a 2-dimensional array for linear system matrix. Don't forget that the number of rows in the augmented matrix doesn't equal to the number of columns.
-        for (int i = 0; i < numRows; ++i)
-            for (int j = 0; j < numRows + 1; ++j)
-                 system[i][j] = input.nextDouble();
-          
+          double[][] system = new double[numRows][numRows+1];
+        
+        
         // use nested loops to read linear system elements from the file to the 2-dimensional array you defined
+          for (int i = 0; i < numRows; ++i)
+        	  for (int j = 0; j < numRows + 1; ++j)
+        		  system[i][j] = input.nextDouble();
         
-        double[] res = solve(system); // give your 2-dimensional array as a parameter to the solve method (instead of ...)
-
+        // give your 2-dimensional array as a parameter to the solve method (instead of ...)
+          double[] res = solve(system);
+        
         // Printing results
-        for (int i = 0; i < res.length; ++i)
-             System.out.println("x_" + (i+1) + " = " + res[i]);
+          for (int i = 0; i < res.length; ++i)
+        	  System.out.println("x_" + (i+1) + " = " + res[i]);
         
-        input.close();  
+          input.close();  
 	}//Closes main method
    
 	static public double[] solve(double[][] system) {
      
-		int j, i, k, x;
-		double sum, fact;
-		int n = system.length;
+		  int i, j, k;
+		  double sum;
+		  int length = system.length;
+		  System.out.println(length);
      
 		// define an array of an appropriate size to store the result (i.e. the values of unknown parameters)
-        double[] a;
-        a = new double[n];
+		  double[] results;
+		  results = new double[length];
 
         // TODO: implement forward elimination, given a description of the algorithm in the lab
-        for (i = 0; i < n; i++)
-        {//1
-        	for (j = i+1; j < n; j++)
-        	{
-        		double coef = system[j][i] / system[i][i];
- 
-        		for (k=0; k< n+1; k++)
-        		{ 
-        			system[j][k] -= coef * system[i][k];
-        		}
-        	}
-        }//1
+		  for (i = 0; i < length; i++)
+		  {
+			  for (j = i+1; j < length; j++)
+			  {
+				  double coef = system[j][i] / system[i][i];
+				  
+				  for (k=0; k< length+1; k++)
+				  { 
+					  system[j][k] -= coef * system[i][k];
+				  }
+			  }
+		  }
       
-       for (i = n - 1; i >= 0; --i) 
-       {
-    	   sum = 0;
-    	   for (k=i+1; k<n-1; k++)
-    	   {
-			   sum += system[i][k] * a[k];
-    	   }
-    	   a[i] = (system[i][n] - sum) / system[i][i];
-			   
-    	   // TODO: implement back substitution to get the values of unknown variables	   
-       }
-       return a;
+		// TODO: implement back substitution to get the values of unknown variables
+		  for (i = length - 1; i >= 0; --i) 
+		  {
+			  sum = 0;
+			  for (k=i+1; k<length-1; k++)
+			  {
+				  sum += system[i][k] * results[k];
+			  }
+			  results[i] = (system[i][length] - sum) / system[i][i];
+			    	   
+		  }
+		  return results;
 	}//Closes solve method
 }
 
