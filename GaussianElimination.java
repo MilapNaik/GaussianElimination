@@ -49,18 +49,18 @@ public class GaussianElimination
 		  {
 			  for (j = i+1; j < length; j++)
 			  { 
-				  double coef = system[j][i] / system[i][i]; //Row j column i / row i column i
+				  double coef = system[j][i] / system[i][i]; //Row j column i / row i column i to get coefficient needed to get rest of column i to 0
 
 				  for (k=0; k< length+1; k++)
 				  { 
-					  system[j][k] -= coef * system[i][k];// Make row j column k = 0
+					  system[j][k] -= coef * system[i][k];// Make row j column k = 0 and the rest of the row is affected by this
 
 				  }
 			  }
 		  }
       
 		// TODO: implement back substitution to get the values of unknown variables
-		  for (i = length - 1; i >= 0; --i) 
+		  for (i = length - 1; i >= 0; --i) //The last coefficient is solved now in the last row, substitute backwards using this
 		  {
 			  sum = 0;
 			  for (k=0; k<length; k++)
@@ -69,8 +69,9 @@ public class GaussianElimination
 
 			  }
 			  
-			  results[i] = (system[i][length] - sum) / system[i][i];
-  	   
+			  results[i] = (system[i][length] - sum) / system[i][i];// Basically, results[length-1] will always = system[length-1][length]
+			  														// And this part takes that, and repeats for each row moving upward
+			  														// In order to solve for the rest of the equations.
 		  }
 		  return results;
 	}//Closes solve method
