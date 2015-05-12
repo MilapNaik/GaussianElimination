@@ -25,11 +25,11 @@ public class GaussianElimination
         		  system[i][j] = input.nextDouble();
         
         // give your 2-dimensional array as a parameter to the solve method (instead of ...)
-          double[] res = solve(system);
+          double[] results = solve(system);
         
         // Printing results
-          for (int i = 0; i < res.length; ++i)
-        	  System.out.println("x_" + (i+1) + " = " + res[i]);
+          for (int i = 0; i < results.length; ++i)
+        	  System.out.println("x_" + (i+1) + " = " + results[i]);
         
           input.close();  
 	}//Closes main method
@@ -39,7 +39,6 @@ public class GaussianElimination
 		  int i, j, k;
 		  double sum;
 		  int length = system.length;
-		  System.out.println(length);
      
 		// define an array of an appropriate size to store the result (i.e. the values of unknown parameters)
 		  double[] results;
@@ -49,12 +48,13 @@ public class GaussianElimination
 		  for (i = 0; i < length; i++)
 		  {
 			  for (j = i+1; j < length; j++)
-			  {
-				  double coef = system[j][i] / system[i][i];
-				  
+			  { 
+				  double coef = system[j][i] / system[i][i]; //Row j column i / row i column i
+
 				  for (k=0; k< length+1; k++)
 				  { 
-					  system[j][k] -= coef * system[i][k];
+					  system[j][k] -= coef * system[i][k];// Make row j column k = 0
+
 				  }
 			  }
 		  }
@@ -63,12 +63,14 @@ public class GaussianElimination
 		  for (i = length - 1; i >= 0; --i) 
 		  {
 			  sum = 0;
-			  for (k=i+1; k<length-1; k++)
+			  for (k=0; k<length; k++)
 			  {
 				  sum += system[i][k] * results[k];
+
 			  }
+			  
 			  results[i] = (system[i][length] - sum) / system[i][i];
-			    	   
+  	   
 		  }
 		  return results;
 	}//Closes solve method
